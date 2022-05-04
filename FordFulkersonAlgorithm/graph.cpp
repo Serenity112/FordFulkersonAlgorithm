@@ -6,8 +6,6 @@ using namespace std;
 #include "graph.h"
 #include "queue.h"
 
-#define inf DBL_MAX
-
 Graph::Graph(int size)
 {
 	this->size = size;
@@ -16,8 +14,21 @@ Graph::Graph(int size)
 	{
 		matrix[i] = new double[size];
 		for (int j = 0; j < size; j++)
-			matrix[i][j] = inf;
+			matrix[i][j] = 0;
 	}
+}
+
+Graph::~Graph()
+{
+    delete [] matrix;
+}
+
+double minimum(double n1, double n2)
+{
+    if (n1 <= n2)
+        return n1;
+    else
+        return n2;
 }
 
 bool bfs(Graph& rGraph, int s, int t, int* parent)
@@ -31,9 +42,6 @@ bool bfs(Graph& rGraph, int s, int t, int* parent)
     visited[s] = true;
     parent[s] = -1;
 
-
-    cout << "Start cycle" << endl;
-    // Standard BFS Loop
     while (!queue.empty()) {
         int i = queue.front();
         queue.pop();
@@ -57,16 +65,6 @@ bool bfs(Graph& rGraph, int s, int t, int* parent)
 
 double FordFulkerson(Graph& graph, int s, int t)
 {
-    cout << "Graph: " << endl;
-    for (int i = 0; i < graph.size; i++)
-    {
-        for (int j = 0; j < graph.size; j++)
-        {
-            cout << graph.matrix[i][j] << " ";
-        }
-        cout << endl;
-    }
-
     int size = graph.size;
     Graph rGraph(size);
 
@@ -78,24 +76,24 @@ double FordFulkerson(Graph& graph, int s, int t)
 
     double max_flow = 0.0;
 
-    while (bfs(rGraph, s, t, parent)) {
-
+    while (bfs(rGraph, s, t, parent)) 
+    {
         double path_flow = INT_MAX;
-        for (int i = t; i != s; i = parent[i]) {
+        for (int i = t; i != s; i = parent[i]) 
+        {
             int j = parent[i];
-            path_flow = min(path_flow, rGraph.matrix[j][i]);
+            path_flow = minimum(path_flow, rGraph.matrix[j][i]);
         }
 
-        for (int i = t; i != s; i = parent[i]) {
+        for (int i = t; i != s; i = parent[i]) 
+        {
             int j = parent[i];
             rGraph.matrix[j][i] -= path_flow;
             rGraph.matrix[i][j] += path_flow;
         }
-
+    
         max_flow += path_flow;
     }
-
-    cout << "max: " << max_flow << endl;
 
     return max_flow;
 }

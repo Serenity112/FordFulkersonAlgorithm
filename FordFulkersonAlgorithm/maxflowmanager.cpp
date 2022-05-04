@@ -86,11 +86,6 @@ Graph buildGraphByVertex(List<Edge>& edgeList, Map<string, int>& vertexNumerics)
 {
 	Graph* graph = new Graph(vertexNumerics.size);
 
-	for (int i = 0; i < graph->size; i++)
-		for (int j = 0; j < graph->size; j++)
-			graph->matrix[i][j] = 0;
-
-
 	auto itr = edgeList.create_iterator();
 	while (itr->has_next())
 	{
@@ -100,19 +95,6 @@ Graph buildGraphByVertex(List<Edge>& edgeList, Map<string, int>& vertexNumerics)
 		graph->matrix[numVertex1][numVertex2] = edge.weight;
 	}
 	delete itr;
-
-
-
-
-	cout << "Graph in build: " << endl;
-	for (int i = 0; i < graph->size; i++)
-	{
-		for (int j = 0; j < graph->size; j++)
-		{
-			cout << graph->matrix[i][j] << " ";
-		}
-		cout << endl;
-	}
 
 	return *graph;
 }

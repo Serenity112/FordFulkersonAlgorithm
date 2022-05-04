@@ -10,6 +10,7 @@ struct Graph
 	int size;
 
 	Graph(int size);
+	~Graph();
 };
 
 double FordFulkerson(Graph& graph, int vertex1, int vertex2);
