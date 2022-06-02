@@ -7,7 +7,7 @@ using namespace std;
 #include "list.h"
 #include "edge.h"
 
-double findMaxFlow(List<Edge>& edgeList, string s, string t);
+double findMaxFlow(List<Edge>& edgeList, string source, string stock);
 
 List<Edge> getEdgeList(string fileName);
 

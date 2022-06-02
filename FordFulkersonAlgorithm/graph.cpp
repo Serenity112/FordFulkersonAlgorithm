@@ -31,24 +31,24 @@ double minimum(double n1, double n2)
         return n2;
 }
 
-bool bfs(Graph& rGraph, int s, int t, int* parent)
+bool bfs(Graph& residualGraph, int source, int stock, int* parent)
 {
-    bool* visited = new bool[rGraph.size];
-    for (int i = 0; i < rGraph.size; i++)
+    bool* visited = new bool[residualGraph.size];
+    for (int i = 0; i < residualGraph.size; i++)
         visited[i] = false;
 
     Queue<int> queue;
-    queue.push(s);
-    visited[s] = true;
-    parent[s] = -1;
+    queue.push(source);
+    visited[source] = true;
+    parent[source] = -1;
 
     while (!queue.empty()) {
         int i = queue.front();
         queue.pop();
 
-        for (int j = 0; j < rGraph.size; j++) {
-            if (visited[j] == false && rGraph.matrix[i][j] > 0) {
-                if (j == t) {
+        for (int j = 0; j < residualGraph.size; j++) {
+            if (visited[j] == false && residualGraph.matrix[i][j] > 0) {
+                if (j == stock) {
                     parent[j] = i;
                     return true;
                 }
@@ -63,33 +63,33 @@ bool bfs(Graph& rGraph, int s, int t, int* parent)
     return false;
 }
 
-double FordFulkerson(Graph& graph, int s, int t)
+double FordFulkerson(Graph& graph, int source, int stock)
 {
     int size = graph.size;
-    Graph rGraph(size);
+    Graph residualGraph(size);
 
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
-            rGraph.matrix[i][j] = graph.matrix[i][j];
+            residualGraph.matrix[i][j] = graph.matrix[i][j];
 
     int* parent = new int[size]; 
 
     double max_flow = 0.0;
 
-    while (bfs(rGraph, s, t, parent)) 
+    while (bfs(residualGraph, source, stock, parent)) 
     {
         double path_flow = INT_MAX;
-        for (int i = t; i != s; i = parent[i]) 
+        for (int i = stock; i != source; i = parent[i]) 
         {
             int j = parent[i];
-            path_flow = minimum(path_flow, rGraph.matrix[j][i]);
+            path_flow = minimum(path_flow, residualGraph.matrix[j][i]);
         }
 
-        for (int i = t; i != s; i = parent[i]) 
+        for (int i = stock; i != source; i = parent[i]) 
         {
             int j = parent[i];
-            rGraph.matrix[j][i] -= path_flow;
-            rGraph.matrix[i][j] += path_flow;
+            residualGraph.matrix[j][i] -= path_flow;
+            residualGraph.matrix[i][j] += path_flow;
         }
     
         max_flow += path_flow;

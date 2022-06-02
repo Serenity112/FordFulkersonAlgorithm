@@ -99,13 +99,13 @@ Graph buildGraphByVertex(List<Edge>& edgeList, Map<string, int>& vertexNumerics)
 	return *graph;
 }
 
-double findMaxFlow(List<Edge>& edgeList, string s, string t)
+double findMaxFlow(List<Edge>& edgeList, string source, string stock)
 {
 	Map<string, int> vertexUniqueNumbers = giveVertexUniqueNumbers(edgeList);
 
 	int size = vertexUniqueNumbers.size;
-	int vertex1 = vertexUniqueNumbers.Find(s);
-	int vertex2 = vertexUniqueNumbers.Find(t);
+	int vertex1 = vertexUniqueNumbers.Find(source);
+	int vertex2 = vertexUniqueNumbers.Find(stock);
 
 	Graph graph = buildGraphByVertex(edgeList, vertexUniqueNumbers);
 
